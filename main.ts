@@ -1,7 +1,7 @@
 //%color=#04B404 icon="\uf18c" block="TDS"
 namespace tds_meter {
     function getMedian(bArray: number[]): number {
-        let bTab: number[]
+        let bTab: number[] = []
         let iFilterLen = bArray.length
         let bTemp = 0
         for (let i = 0; i < iFilterLen; i++) {
@@ -31,15 +31,10 @@ namespace tds_meter {
     //%pinarg.fieldEditor="gridpicker" pinarg.fieldOptions.columns=5
     export function reading(pinarg: AnalogPin, t: number): number {
         let coeff = 1 + 0.02 * (t - 25)
-        let analogValue: number[]
-        let k = 0
-        let time = input.runningTime()
-        while (analogValue.length < 30) {
-            if (input.runningTime() - time > 40) {
-                analogValue[k] = pins.analogReadPin(pinarg)
-                time = input.runningTime()
-                k++
-            }
+        let analogValue: number[] = []
+        for (let k = 0; k < 30; k++) {
+            analogValue[k] = pins.analogReadPin(pinarg)
+            basic.pause(40)
         }
         let voltage = getMedian(analogValue) * 5 / 1024
         let compensationVolatge = voltage / coeff
