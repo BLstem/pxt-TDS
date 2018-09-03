@@ -29,14 +29,9 @@ namespace tds_meter {
      */
     //%block="reading (ppm) %pinarg|temperture %t"
     //%pinarg.fieldEditor="gridpicker" pinarg.fieldOptions.columns=5
-    export function reading(pinarg: AnalogPin, t: number): number {
+    export function reading(pinarg: number, t: number): number {
         let coeff = 1 + 0.02 * (t - 25)
-        let analogValue: number[] = []
-        for (let k = 0; k < 30; k++) {
-            analogValue[k] = pins.analogReadPin(pinarg)
-            basic.pause(40)
-        }
-        let voltage = getMedian(analogValue) * 5 / 1024
+        let voltage = pinarg * 5 / 1024
         let compensationVolatge = voltage / coeff
         let tdsValue = (133.42 * compensationVolatge * compensationVolatge * compensationVolatge - 255.86 * compensationVolatge * compensationVolatge + 857.39 * compensationVolatge) * 0.5
         return tdsValue
