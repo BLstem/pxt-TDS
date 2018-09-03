@@ -28,7 +28,6 @@ namespace tds_meter {
      * @param t temperture; eg: 25, 20, 30
      */
     //%block="reading (ppm) %pinarg|temperture %t"
-    //%pinarg.fieldEditor="gridpicker" pinarg.fieldOptions.columns=5
     export function reading(pinarg: number, t: number): number {
         let coeff = 1 + 0.02 * (t - 25)
         let voltage = pinarg * 5 / 1024
